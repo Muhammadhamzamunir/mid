@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text, FlatList } from 'react-native';
 import useBitcoinData from './useBitcoinData';
 
 const Login = () => {
@@ -31,14 +31,18 @@ const Login = () => {
         <Text>{disclaimer}</Text>
       </View>
       <Text style={styles.subtitle}>Bitcoin Price Index (BPI):</Text>
-      {Object.entries(bpi).map(([currency, details]) => (
-        <View key={currency} style={styles.currencyDetail}>
-          <Text style={styles.currency}>{currency}</Text>
-          <Text style={styles.rate}>
-            {details.description}: {details.symbol} {details.rate}
-          </Text>
-        </View>
-      ))}
+      <FlatList
+        data={Object.entries(bpi)}
+        keyExtractor={(item) => item[0]}
+        renderItem={({ item }) => (
+          <View style={styles.currencyDetail}>
+            <Text style={styles.currency}>{item[0]}</Text>
+            <Text style={styles.rate}>
+              {item[1].description}: {item[1].symbol} {item[1].rate}
+            </Text>
+          </View>
+        )}
+      />
     </View>
   );
 };
